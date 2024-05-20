@@ -75,7 +75,8 @@ class Server:
           page_size (int): The number of items per page
 
         Returns:
-          Dict[str, Any]: A dictionary containing the dataset page and metadata.
+          Dict[str, Any]: A dictionary containing the dataset page
+          and metadata.
         """
         data = self.get_page(page, page_size)
         total_items = len(self.dataset())
@@ -88,7 +89,7 @@ class Server:
             "next_page": page + 1 if page < total_pages else None,
             "prev_page": page - 1 if page > 1 else None,
             "total_pages": total_pages
-}
+        }
 
 
 if __name__ == "__main__":
