@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+This module provides a utility function 'index range'
+that calculates the start and end indices for pagination.
+"""
 from typing import Tuple
 
 
