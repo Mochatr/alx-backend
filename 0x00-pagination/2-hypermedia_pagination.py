@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
+"""
+Ths module implements pagination and hypermedia pagination
+for a dataset of popular baby names.
+"""
 import csv
-from typing import List, Tuple
 import math
+from typing import List, Tuple, Dict, Any
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
