@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Deletion-resilient hypermedia pagination
+This module implements Deletion-resilient hypermedia pagination
+for a dataset of popular baby names.
 """
 
 
 import csv
-from typing import List, Tuple
 import math
+from typing import List, Dict, Any
 
 
 class Server:
@@ -22,15 +23,26 @@ class Server:
 
     def dataset(self) -> List[List]:
         """
-        Cached dataset
+        Retrieve or cache the dataset from a CSV file
+        excluding the header if present.
         """
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
             self.__dataset = dataset[1:]
-
         return self.__dataset
+
+    def indexed_dataset(self) -> Dict[int, List]:
+        """
+        Create or retrieve a dictionary indexed
+        by orignal dataset position, providing resilience
+        against deletions.
+        """
+        if self.__indexed_dataset is None:
+            self.__indexed_dataset = {i: row for i,
+                                      row in enumerate(self.dataset())}
+        return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None,
                         page_size: int = 10) -> Dict[str, Any]:
@@ -47,6 +59,8 @@ class Server:
                           and metadata.
 
         """
+        if index is None:
+            index = 0
         assert isinstance(index, int) and index >= 0
         assert isinstance(page_size, int) and page_size > 0
 
@@ -57,15 +71,11 @@ class Server:
         current_index = index
         next_index = None
 
-        for _ in range(page_size):
-            if current_index in indexed_data:
-                data.append(indexed_data[current_index])
-                current_index += 1
-            else:
-                break
+        while len(data) < page_size and current_index in indexed_keys:
+            data.append(indexed_data[current_index])
+            current_index += 1
 
-        if current_index < len(indexed_keys):
-            next_index = current_index
+        next_index = current_index if current_index in indexed_keys else None
 
         return {
             "index": index,
@@ -77,5 +87,5 @@ class Server:
 
 if __name__ == "__main__":
     server = Server()
-    print(server.get_page(0, 10))
-    print(server.get_page(10, 10))
+    print(server.get_hyper_index(0, 10))
+    print(server.get_hyper_index(10, 10))
