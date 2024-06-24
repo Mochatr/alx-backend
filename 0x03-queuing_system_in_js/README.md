@@ -33,7 +33,7 @@ Upon completion of this project, you should be able to:
 ## Required Files for the Project
 
 ### `package.json`
-```json
+```
 {
     "name": "queuing_system_in_js",
     "version": "1.0.0",
@@ -70,10 +70,10 @@ Upon completion of this project, you should be able to:
       "sinon": "^7.5.0"
     }
   }
-
+```
+.babelrc
 
 ```
-$ cat .babelrc
 {
   "presets": [
     "@babel/preset-env"
