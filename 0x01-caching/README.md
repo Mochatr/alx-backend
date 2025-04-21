@@ -44,8 +44,11 @@ At the end of this project, you are expected to be able to explain to anyone, wi
 ### Parent class BaseCaching
 All your classes must inherit from `BaseCaching` defined below:
 
-```python
+```sh
 $ cat base_caching.py
+```
+
+```python
 #!/usr/bin/python3
 """ BaseCaching module
 """
